@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="static/favicon.png">
+        <link rel="stylesheet" href="styles.css">
+
+        <title>Projeto MVP Front End</title>
+    </head>
+
+    <body>
+        <header>
+            <div class="title">
+                <h2>Lembretes: o melhor amigo de sua memória :-)</h2>
+            </div>
+        </header>
+        <section class="newReminder container wrap">
+            <div class="itemsLine">
+                <input type="text" id="newName" class="item-1 marginFirst" placeholder="Nome do lembrete:">
+                <input type="number" id="newInterval" class="item-1" placeholder="Intervalo:">
+            </div>
+            <div class="itemsLine">
+                <input type="textarea" id="newDescription" class="item-1" placeholder="Descrição:">
+            </div>
+            <div class="itemsLine checkboxes">
+                <label for="newSendEmail">Enviar Email ?</label>
+                <input type="checkbox" id="newSendEmail" class="item-2"  name="newSendEmail" value="emChecked">
+                <label for="newRecurring">Lembrete recorrente ?</label>
+                <input type="checkbox" class="item-2" id="newRecurring" value="recChecked">
+            </div>
+            <div class="itemsLine justCenter">
+                <span onclick="newReminder()" class="addBtn">Adicionar Lembrete</span>
+            </div>
+        </section>
+
+        <section class="items">
+            <table id="myTable">
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Intervalo em dias</th>
+                    <th>Enviar email</th>
+                    <th>Lembrete recorrente</th>
+                    <th><img width="20" height="20" src="images/trash.png" alt="trash"/></th>
+                    <th><img width="20" height="20" src="images/edit.png" alt="edit-file"/></th>
+                </tr>
+            </table>
+        </section>
+        <script src="scripts.js"></script>
+        <footer>Ícones by <a href="https://icons8.com">Icons8</a></footer>
+    </body>
+</html>
