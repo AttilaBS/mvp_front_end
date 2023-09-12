@@ -136,11 +136,12 @@ const getList = async () => {
         for (i = 0; i < update.length; i++) {
           update[i].onclick = function () {
             let div = this.parentElement.parentElement;
-            const nameItem = div.getElementsByTagName('td')[0].innerHTML
-            if (confirm('Você confirma as alterações?')) {
-              updateReminder(nameItem)
-              alert('Lembrete atualizado!')
-            }
+            const nameItem = div.getElementsByTagName('td')[0].innerHTML;
+            openAndCloseModal()
+            // if (confirm('Você confirma as alterações?')) {
+            //   updateReminder(nameItem)
+            //   alert('Lembrete atualizado!')
+            // }
           }
         }
       }
@@ -161,6 +162,31 @@ const getList = async () => {
               console.error('Error:', error);
             });
         }
+      
+      /*
+        ------------------------------------------------------------------------
+        Função que abre ou fecha o modal de edição do lembrete.
+        ------------------------------------------------------------------------
+      */
+      const openAndCloseModal = () => {
+        const modal = document.getElementById('myModal');
+        modal.style.display = 'block';
+        let span = document.getElementsByClassName('close')[0];
+        span.onclick = function () {
+          modal.style.display = 'none';
+        }
+      }
+
+      /*
+        ------------------------------------------------------------------------
+        Função que fecha o modal de edição do lembrete.
+        ------------------------------------------------------------------------
+      */
+      const closeModal = (span) => {
+        span.onclick = function() {
+          modal.style.display = 'none';
+        }
+      }
       
       /*
         ------------------------------------------------------------------------
@@ -234,4 +260,5 @@ const getList = async () => {
         document.getElementById('newRecurring').value = '';
       
         removeElement()
+        updateElement()
       }
