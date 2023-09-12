@@ -137,7 +137,17 @@ const getList = async () => {
           update[i].onclick = function () {
             let div = this.parentElement.parentElement;
             const nameItem = div.getElementsByTagName('td')[0].innerHTML;
-            openAndCloseModal()
+            const descriptionItem = div.getElementsByTagName('td')[1].innerHTML;
+            const intervalItem = div.getElementsByTagName('td')[2].innerHTML;
+            const sendEmailItem = div.getElementsByTagName('td')[3].innerHTML;
+            const recurringItem = div.getElementsByTagName('td')[4].innerHTML;
+            openAndCloseModal(
+              nameItem,
+              descriptionItem,
+              intervalItem,
+              sendEmailItem,
+              recurringItem
+            )
             // if (confirm('Você confirma as alterações?')) {
             //   updateReminder(nameItem)
             //   alert('Lembrete atualizado!')
@@ -168,9 +178,12 @@ const getList = async () => {
         Função que abre ou fecha o modal de edição do lembrete.
         ------------------------------------------------------------------------
       */
-      const openAndCloseModal = () => {
+      const openAndCloseModal = (
+        name, description, interval, sendEmail, recurring
+      ) => {
         const modal = document.getElementById('myModal');
         modal.style.display = 'block';
+        setModalInputsValues(name, description, interval, sendEmail, recurring);
         let span = document.getElementsByClassName('close')[0];
         span.onclick = function () {
           modal.style.display = 'none';
@@ -187,6 +200,34 @@ const getList = async () => {
           modal.style.display = 'none';
         }
       }
+
+      /*
+        ------------------------------------------------------------------------
+        Função que captura os valores dos inputs da tabela e envia para o modal.
+        ------------------------------------------------------------------------
+      */
+      const setModalInputsValues = (
+        name, description, interval, sendEmail, recurring
+      ) => {
+        let modalName = document.getElementById('updName');
+        let modalDescrip = document.getElementById('updDescription');
+        let modalInterval = document.getElementById('updInterval');
+        let modalSendEmail = document.getElementById('updSendEmail');
+        let modalRecurring = document.getElementById('updRecurring');
+        modalName.value = name;
+        modalDescrip.value = description;
+        modalInterval.value = interval;
+        modalSendEmail.checked = sendEmail === 'true' ? true : false;
+        modalRecurring.checked = recurring == 'true' ? true : false;
+      }
+
+      // const formData = new FormData();
+      // formData.append('name', name);
+      // formData.append('description', description);
+      // formData.append('interval', interval);
+      // formData.append('send_email', sendEmail);
+      // formData.append('recurring', recurring);
+      
       
       /*
         ------------------------------------------------------------------------
