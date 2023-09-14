@@ -163,7 +163,7 @@ tr:nth-child(odd){
     background-color: #f3dddd;
 }
 
-th:nth-child(2){
+th:nth-child(3){
     width: 80%;
 }
 
@@ -181,6 +181,15 @@ footer {
 
 footer span {
     padding: 5px;
+}
+
+#myTable input[type=checkbox] {
+    width: 25px;
+    height: 30px;
+}
+
+.checkboxStyle {
+    text-align: center;
 }
 
 /* Modal styles */
@@ -226,4 +235,9 @@ footer span {
     display: flex;
     flex-direction: column;
     position: relative;
+}
+
+#UpdId,
+#newId {
+    display: none;
 }

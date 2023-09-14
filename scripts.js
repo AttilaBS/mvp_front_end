@@ -10,7 +10,11 @@ const getList = async () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        if (data.reminders === undefined) {
+          return alert('Ainda não foi criado nenhum lembrete, que tal começar?');
+        }
         data.reminders.forEach(item => insertList(
+            item.id,
             item.name,
             item.description,
             item.interval,
@@ -49,7 +53,6 @@ const getList = async () => {
         formData.append('interval', inputInterval);
         formData.append('send_email', inputSendEmail);
         formData.append('recurring', inputRecurring);
-      
         let url = 'http://127.0.0.1:5000/create';
         fetch(url, {
           method: 'post',
@@ -99,10 +102,10 @@ const getList = async () => {
         for (i = 0; i < remove.length; i++) {
           remove[i].onclick = function () {
             let div = this.parentElement.parentElement;
-            const nameItem = div.getElementsByTagName('td')[0].innerHTML
+            const idItem = div.getElementsByTagName('td')[0].innerHTML
             if (confirm('Você tem certeza?')) {
               div.remove()
-              deleteReminder(nameItem)
+              deleteReminder(idItem)
               alert('Removido!')
             }
           }
@@ -114,8 +117,8 @@ const getList = async () => {
         Função que faz a requisição de remover lembrete ao servidor.
         ------------------------------------------------------------------------
       */
-      const deleteReminder = (item) => {
-        let url = 'http://127.0.0.1:5000/delete?name=' + item;
+      const deleteReminder = (id) => {
+        let url = 'http://127.0.0.1:5000/delete?id=' + id;
         fetch(url, {
           method: 'delete'
         })
@@ -136,22 +139,20 @@ const getList = async () => {
         for (i = 0; i < update.length; i++) {
           update[i].onclick = function () {
             let div = this.parentElement.parentElement;
-            const nameItem = div.getElementsByTagName('td')[0].innerHTML;
-            const descriptionItem = div.getElementsByTagName('td')[1].innerHTML;
-            const intervalItem = div.getElementsByTagName('td')[2].innerHTML;
-            const sendEmailItem = div.getElementsByTagName('td')[3].innerHTML;
-            const recurringItem = div.getElementsByTagName('td')[4].innerHTML;
+            const idItem = div.getElementsByTagName('td')[0].innerHTML;
+            const nameItem = div.getElementsByTagName('td')[1].innerHTML;
+            const descriptionItem = div.getElementsByTagName('td')[2].innerHTML;
+            const intervalItem = div.getElementsByTagName('td')[3].innerHTML;
+            const sendEmailItem = div.getElementsByTagName('input')[0].checked;
+            const recurringItem = div.getElementsByTagName('input')[1].checked;
             openAndCloseModal(
+              idItem,
               nameItem,
               descriptionItem,
               intervalItem,
               sendEmailItem,
               recurringItem
             )
-            // if (confirm('Você confirma as alterações?')) {
-            //   updateReminder(nameItem)
-            //   alert('Lembrete atualizado!')
-            // }
           }
         }
       }
@@ -161,7 +162,21 @@ const getList = async () => {
         Função que faz a requisição de atualizar o lembrete ao servidor.
         ------------------------------------------------------------------------
       */
-        const updateReminder = (item) => {
+        const updateReminder = (
+          toUpdId,
+          toUpdName,
+          toUpdDescription,
+          toUpdInterval,
+          toUpdSendEmail,
+          toUpdRecurring
+        ) => {
+          const formData = new FormData();
+          formData.append('id', toUpdId);
+          formData.append('name', toUpdName);
+          formData.append('description', toUpdDescription);
+          formData.append('interval', toUpdInterval);
+          formData.append('send_email', toUpdSendEmail);
+          formData.append('recurring', toUpdRecurring);
           let url = 'http://127.0.0.1:5000/update'
           fetch(url, {
             method: 'put',
@@ -179,11 +194,11 @@ const getList = async () => {
         ------------------------------------------------------------------------
       */
       const openAndCloseModal = (
-        name, description, interval, sendEmail, recurring
+        id, name, description, interval, sendEmail, recurring
       ) => {
         const modal = document.getElementById('myModal');
         modal.style.display = 'block';
-        setModalInputsValues(name, description, interval, sendEmail, recurring);
+        setModalInputsValues(id, name, description, interval, sendEmail, recurring);
         let span = document.getElementsByClassName('close')[0];
         span.onclick = function () {
           modal.style.display = 'none';
@@ -207,28 +222,42 @@ const getList = async () => {
         ------------------------------------------------------------------------
       */
       const setModalInputsValues = (
-        name, description, interval, sendEmail, recurring
+        idToUpd, name, description, interval, sendEmail, recurring
       ) => {
+        let modalId = document.getElementById('updId');
         let modalName = document.getElementById('updName');
         let modalDescrip = document.getElementById('updDescription');
         let modalInterval = document.getElementById('updInterval');
         let modalSendEmail = document.getElementById('updSendEmail');
         let modalRecurring = document.getElementById('updRecurring');
+        modalId.value = idToUpd;
         modalName.value = name;
         modalDescrip.value = description;
         modalInterval.value = interval;
-        modalSendEmail.checked = sendEmail === 'true' ? true : false;
-        modalRecurring.checked = recurring == 'true' ? true : false;
+        modalSendEmail.checked = sendEmail;
+        modalRecurring.checked = recurring;
+      }
+      updtBtn = document.getElementById('updBtn');
+      updtBtn.onclick = function () {
+        let idToUpd = document.getElementById('updId').value;
+        let nameToUpd = document.getElementById('updName').value;
+        let descripToUpd = document.getElementById('updDescription').value;
+        let intervalToUpd = document.getElementById('updInterval').value;
+        let sendEmailToUpd = document.getElementById('updSendEmail').checked;
+        let recurringToUpd = document.getElementById('updRecurring').checked
+        updateReminder(
+          idToUpd,
+          nameToUpd,
+          descripToUpd,
+          intervalToUpd,
+          sendEmailToUpd,
+          recurringToUpd
+        )
+        location.reload()
+          getList()
+          alert('Lembrete atualizado!')
       }
 
-      // const formData = new FormData();
-      // formData.append('name', name);
-      // formData.append('description', description);
-      // formData.append('interval', interval);
-      // formData.append('send_email', sendEmail);
-      // formData.append('recurring', recurring);
-      
-      
       /*
         ------------------------------------------------------------------------
         Função para adicionar um novo lembrete 
@@ -240,8 +269,6 @@ const getList = async () => {
         let inputInterval = document.getElementById('newInterval').value;
         let inputSendEmail = document.getElementById('newSendEmail').checked;
         let inputRecurring = document.getElementById('newRecurring').checked;
-        let showSendEmail = inputSendEmail ? 'Sim' : 'Não';
-        let showRecurring = inputRecurring ? 'Sim' : 'Não';
       
         if (
           inputName === '' 
@@ -261,13 +288,8 @@ const getList = async () => {
             inputSendEmail,
             inputRecurring
           )
-          insertList(
-            inputName,
-            inputDescription,
-            inputInterval,
-            showSendEmail,
-            showRecurring
-          )
+          location.reload()
+          getList()
           alert('Lembrete adicionado!')
         }
       }
@@ -278,22 +300,35 @@ const getList = async () => {
         ------------------------------------------------------------------------
       */
       const insertList = (
+        id,
         name,
         description,
         interval,
         sendEmail,
         recurring
       ) => {
-        var item = [name, description, interval, sendEmail, recurring]
-        var table = document.getElementById('myTable');
-        var row = table.insertRow();
+        let item = [id, name, description, interval, sendEmail, recurring]
+        let table = document.getElementById('myTable');
+        let row = table.insertRow();
       
-        for (var i = 0; i < item.length; i++) {
-          var cel = row.insertCell(i);
-          cel.textContent = item[i];
+        for (let i = 0; i < item.length; i++) {
+          let cel = row.insertCell(i);
+          if (item[i] === true || item[i] === false) {
+            const boolItem = row.getElementsByTagName('td').item(i);
+            let checkBox = document.createElement('input');
+            checkBox.setAttribute('type', 'checkbox');
+            checkBox.setAttribute('disabled', true);
+            boolItem.append(checkBox);
+            boolItem.classList.add('checkboxStyle');
+            let getCheckBox = cel.getElementsByTagName('input')[0];
+            getCheckBox.checked = item[i];
+          } else {
+            cel.textContent = item[i];
+          }
         }
         insertButton(row.insertCell(-1));
         insertEditButton(row.insertCell(-1))
+        document.getElementById('newId').value = '';
         document.getElementById('newName').value = '';
         document.getElementById('newDescription').value = '';
         document.getElementById('newInterval').value = '';
@@ -303,3 +338,4 @@ const getList = async () => {
         removeElement()
         updateElement()
       }
+

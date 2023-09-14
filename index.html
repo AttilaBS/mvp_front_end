@@ -18,6 +18,7 @@
         </header>
         <section class="newReminder container wrap">
             <div class="itemsLine">
+                <input type="number" id="newId" class="item-1">
                 <input type="text" id="newName" class="item-1 marginFirst" placeholder="Nome do lembrete:">
                 <input type="number" id="newInterval" class="item-1" placeholder="Intervalo:">
             </div>
@@ -38,6 +39,7 @@
         <section class="items">
             <table id="myTable">
                 <tr>
+                    <th>Id</th>
                     <th>Nome</th>
                     <th>Descrição</th>
                     <th>Intervalo em dias</th>
@@ -60,6 +62,7 @@
                     <span class="close">&times;</span>
                     <h3>Editar lembrete:</h3>
                     <div class="itemsLine">
+                        <input type="hidden" id="updId">
                         <input type="text" id="updName" class="item-1 marginFirst" placeholder="Nome do lembrete:">
                         <input type="number" id="updInterval" class="item-1" placeholder="Intervalo:">
                     </div>
@@ -73,7 +76,7 @@
                         <input type="checkbox" class="item-2" id="updRecurring" value="recModalChecked">
                     </div>
                     <div class="itemsLine justCenter">
-                        <span onclick="updateReminder()" class="addBtn">Atualizar Lembrete</span>
+                        <span onclick="updateReminder()" id="updBtn" class="addBtn">Atualizar Lembrete</span>
                     </div>
                 </div>
             </div>
