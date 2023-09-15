@@ -6,14 +6,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/x-icon" href="static/favicon.png">
         <link rel="stylesheet" href="styles.css">
-
         <title>Projeto MVP Front End</title>
     </head>
 
     <body>
         <header>
             <div class="title">
-                <h2>Lembretes: Ajudando a lembrar do que é importante.</h2>
+                <h2>Lembretes: Lembrando do que é importante.</h2>
             </div>
         </header>
         <section class="newReminder container wrap">
@@ -27,9 +26,12 @@
             </div>
             <div class="itemsLine checkboxes">
                 <label for="newSendEmail">Enviar Email ?</label>
-                <input type="checkbox" id="newSendEmail" class="item-2"  name="newSendEmail" value="emChecked">
+                <input type="checkbox" id="newSendEmail" class="item-2"  name="newSendEmail" value="emChecked" onchange="toggleEmailInput()">
                 <label for="newRecurring">Lembrete recorrente ?</label>
                 <input type="checkbox" class="item-2" id="newRecurring" value="recChecked">
+            </div>
+            <div class="itemsLine emailElement">
+                <input type="email" id="newEmail" name="newEmail" placeholder="Insira o email para onde será enviado o lembrete:">
             </div>
             <div class="itemsLine justCenter">
                 <span onclick="newReminder()" class="addBtn">Adicionar Lembrete</span>
@@ -44,6 +46,7 @@
                     <th>Descrição</th>
                     <th>Intervalo em dias</th>
                     <th>Enviar email</th>
+                    <th>Email</th>
                     <th>Lembrete recorrente</th>
                     <th><img width="20" height="20" src="images/trash.png" alt="trash"/></th>
                     <th><img width="20" height="20" src="images/edit.png" alt="edit-file"/></th>
@@ -55,7 +58,7 @@
             <span>Ícones by <a href="https://icons8.com"> Icons8</a></span>
         </footer>
 
-        <!-- The Modal -->
+        <!-- start of Modal -->
         <div id="myModal" class="modal">
             <div class="modalContent">
                 <div class="newReminder modalContainer wrap">
@@ -71,9 +74,12 @@
                     </div>
                     <div class="itemsLine checkboxes">
                         <label for="updSendEmail">Enviar Email ?</label>
-                        <input type="checkbox" id="updSendEmail" class="item-2"  name="newSendEmail" value="emModalChecked">
+                        <input type="checkbox" id="updSendEmail" class="item-2"  name="updSendEmail" value="emModalChecked" onchange="toggleModalEmailInput()">
                         <label for="updRecurring">Lembrete recorrente ?</label>
                         <input type="checkbox" class="item-2" id="updRecurring" value="recModalChecked">
+                    </div>
+                    <div class="itemsLine emailElement">
+                        <input type="email" id="updEmail" placeholder="Insira ou altere o email para onde será enviado o lembrete:">
                     </div>
                     <div class="itemsLine justCenter">
                         <span onclick="updateReminder()" id="updBtn" class="addBtn">Atualizar Lembrete</span>
@@ -81,7 +87,7 @@
                 </div>
             </div>
         </div>
-                <!-- end modal edit reminder -->
+        <!-- end of modal -->
         <script src="scripts.js"></script>
     </body>
 </html>

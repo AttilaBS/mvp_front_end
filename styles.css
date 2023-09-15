@@ -162,9 +162,13 @@ th {
 tr:nth-child(odd){
     background-color: #f3dddd;
 }
-
+/* Descrição */
 th:nth-child(3){
-    width: 80%;
+    width: 60%;
+}
+/* Email */
+th:nth-child(6){
+    width: 30%;
 }
 
 tr:hover {
@@ -190,6 +194,20 @@ footer span {
 
 .checkboxStyle {
     text-align: center;
+}
+
+.emailElement {
+    justify-content: center;
+    padding: 0 20px 20px 20px;
+}
+
+.emailElement input {
+    width: 50%;
+    text-align: center;
+}
+
+#newEmail {
+    display: none;
 }
 
 /* Modal styles */
@@ -238,6 +256,7 @@ footer span {
 }
 
 #UpdId,
-#newId {
+#newId,
+#updEmail {
     display: none;
 }
