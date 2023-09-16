@@ -14,7 +14,7 @@ const getList = async () => {
             item.id,
             item.name,
             item.description,
-            item.interval,
+            new Date(item.due_date),
             item.send_email,
             item.email,
             item.recurring
@@ -49,7 +49,7 @@ const getList = async () => {
         const formData = new FormData();
         formData.append('name', inputName);
         formData.append('description', inputDescription);
-        formData.append('interval', inputInterval);
+        formData.append('due_date', inputInterval);
         formData.append('send_email', inputSendEmail);
         formData.append('email', inputEmail);
         formData.append('recurring', inputRecurring);
@@ -58,11 +58,13 @@ const getList = async () => {
           method: 'post',
           body: formData
         })
-          .then((response) => response.json())
-          .catch((error) => {
-            console.log(body);
-            alert('Error:', error);
-          });
+          .then((response) => {
+            response.json();
+          })
+            .catch((error) => {
+              console.log(body);
+              alert('Error:', error);
+            });
       }
       
       /*
@@ -103,7 +105,10 @@ const getList = async () => {
           remove[i].onclick = function () {
             let div = this.parentElement.parentElement;
             const idItem = div.getElementsByTagName('td')[0].innerHTML
-            if (confirm('Você tem certeza?')) {
+            if (confirm(
+              'Você tem certeza que quer remover o item de id: ' + idItem + '?'
+              )
+            ) {
               div.remove()
               deleteReminder(idItem)
               alert('Removido!')
@@ -122,10 +127,12 @@ const getList = async () => {
         fetch(url, {
           method: 'delete'
         })
-          .then((response) => response.json())
-          .catch((error) => {
-            console.error('Error:', error);
-          });
+          .then((response) => {
+            response.json()
+          })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
       }
 
       /*
@@ -138,14 +145,15 @@ const getList = async () => {
         let i;
         for (i = 0; i < update.length; i++) {
           update[i].onclick = function () {
+            let test = document.getElementById('newDate');
             let div = this.parentElement.parentElement;
             const idItem = div.getElementsByTagName('td')[0].innerHTML;
             const nameItem = div.getElementsByTagName('td')[1].innerHTML;
             const descriptionItem = div.getElementsByTagName('td')[2].innerHTML;
-            const intervalItem = div.getElementsByTagName('td')[3].innerHTML;
-            const sendEmailItem = div.getElementsByTagName('input')[0].checked;
+            const intervalItem = div.getElementsByTagName('input')[0].value;
+            const sendEmailItem = div.getElementsByTagName('input')[1].checked;
             const emailItem = div.getElementsByTagName('td')[5].innerHTML;
-            const recurringItem = div.getElementsByTagName('input')[1].checked;
+            const recurringItem = div.getElementsByTagName('input')[2].checked;
             openAndCloseModal(
               idItem,
               nameItem,
@@ -177,7 +185,7 @@ const getList = async () => {
           formData.append('id', toUpdId);
           formData.append('name', toUpdName);
           formData.append('description', toUpdDescription);
-          formData.append('interval', toUpdInterval);
+          formData.append('due_date', toUpdInterval);
           formData.append('send_email', toUpdSendEmail);
           formData.append('email', toUpdEmail);
           formData.append('recurring', toUpdRecurring);
@@ -261,18 +269,19 @@ const getList = async () => {
         let sendEmailToUpd = document.getElementById('updSendEmail').checked;
         let emailToUpd = document.getElementById('updEmail').value;
         let recurringToUpd = document.getElementById('updRecurring').checked
+        dueDateToUpd = new Date(intervalToUpd).toISOString();
         updateReminder(
           idToUpd,
           nameToUpd,
           descripToUpd,
-          intervalToUpd,
+          dueDateToUpd,
           sendEmailToUpd,
           emailToUpd,
           recurringToUpd
         )
+        alert('Lembrete atualizado!')
         location.reload()
-          getList()
-          alert('Lembrete atualizado!')
+        getList()
       }
 
       /*
@@ -287,31 +296,32 @@ const getList = async () => {
         let inputSendEmail = document.getElementById('newSendEmail').checked;
         let inputEmail = document.getElementById('newEmail').value;
         let inputRecurring = document.getElementById('newRecurring').checked;
-      
+        let dueDate = new Date(inputInterval)
+        let dueDateISO = dueDate.toISOString();
+        let dueDateTime = dueDate.getTime();
+        let todayTime = new Date().getTime();
         if (
           inputName === '' 
           || inputDescription === '' 
           || inputInterval === ''
         ) {
-          alert('Os campos nome, descrição e intervalo são obrigatórios!');
-        } else if (isNaN(inputInterval)) {
-          alert('O campo intervalo precisa ser numérico!');
-        } else if (inputInterval.toString().length > 3) {
-          alert('O intervalo precisa ser menor do que 1000!');
+          alert('Os campos nome, descrição e data final são obrigatórios!');
+        } else if (dueDateTime < todayTime) {
+          alert('A data final precisa ser igual ou maior do que hoje !');
         }else if (inputSendEmail && !inputEmail) {
           alert('O campo enviar email foi selecionado, mas o email está vazio!');
         } else {
           postItem(
             inputName,
             inputDescription,
-            inputInterval,
+            dueDateISO,
             inputSendEmail,
             inputEmail,
             inputRecurring
           )
+          alert('Lembrete adicionado!')
           location.reload()
           getList()
-          alert('Lembrete adicionado!')
         }
       }
       
@@ -324,18 +334,27 @@ const getList = async () => {
         id,
         name,
         description,
-        interval,
+        toDate,
         sendEmail,
         email,
         recurring
       ) => {
-        let item = [id, name, description, interval, sendEmail, email, recurring]
+        let item = [id, name, description, toDate, sendEmail, email, recurring]
         let table = document.getElementById('myTable');
         let row = table.insertRow();
-      
+
         for (let i = 0; i < item.length; i++) {
           let cel = row.insertCell(i);
-          if (item[i] === true || item[i] === false) {
+          if ((item[i] instanceof Date) && !isNaN(item[i])) {
+            const dateItem = row.getElementsByTagName('td').item(i);
+            let dateInput = document.createElement('input');
+            dateInput.setAttribute('type', 'date');
+            dateInput.setAttribute('id', 'newDate');
+            dateItem.append(dateInput);
+            let getDate = cel.getElementsByTagName('input')[0];
+            getDate.value = item[i].toISOString().split('T')[0];
+            getDate.disabled = true;
+          } else if (item[i] === true || item[i] === false) {
             const boolItem = row.getElementsByTagName('td').item(i);
             let checkBox = document.createElement('input');
             checkBox.setAttribute('type', 'checkbox');
@@ -369,7 +388,7 @@ const getList = async () => {
       */
       const toggleEmailInput = () => {
         let sendEmailCheckBox = document.getElementById('newSendEmail');
-        let emailElement = document.getElementById('newEmail');
+        let emailElement = document.getElementsByClassName('emailElement')[0];
         if (sendEmailCheckBox.checked) {
           emailElement.style.display = 'flex';
         } else {
@@ -385,7 +404,7 @@ const getList = async () => {
       */
       const toggleModalEmailInput = () => {
         let updSendEmailCheckBox = document.getElementById('updSendEmail');
-        let updEmailElement = document.getElementById('updEmail');
+        let updEmailElement = document.getElementsByClassName('emailElementModal')[0];
         if (updSendEmailCheckBox.checked) {
           updEmailElement.style.display = 'flex';
         } else {

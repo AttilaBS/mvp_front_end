@@ -10,7 +10,6 @@ li {
 }
 
 header {
-
     text-align: center;
     position: relative;
     width: 100%;
@@ -19,7 +18,7 @@ header {
 .title {
     color: #333131;
     width: 100%;
-    background-color: #8bca93;
+    background-color: #dd8888;
     display: inline-block;
     padding: 2px 0px;
     position: sticky;
@@ -42,6 +41,12 @@ header {
     display: flex;
     max-width: 70%;
     flex-direction: column;
+}
+
+.newReminderElement {
+    display: flex;
+    flex-direction: column;
+    height: 75px;
 }
 
 .itemsLine {
@@ -79,6 +84,7 @@ header {
 
 .newReminder label {
     color: #000;
+    text-align: center;
 }
 
 .newReminder:after {
@@ -139,7 +145,7 @@ table,
 th,
 td {
     color: #333131;
-    border: 1px solid #499753;
+    border: 1px solid #a17373;
     border-collapse: collapse;
     cursor: pointer;
     position: relative;
@@ -171,7 +177,8 @@ th:nth-child(6){
     width: 30%;
 }
 
-tr:hover {
+tr:hover,
+tr:first-of-type {
     background: #cda8a8;
 }
 
@@ -197,6 +204,7 @@ footer span {
 }
 
 .emailElement {
+    display: none;
     justify-content: center;
     padding: 0 20px 20px 20px;
 }
@@ -204,10 +212,6 @@ footer span {
 .emailElement input {
     width: 50%;
     text-align: center;
-}
-
-#newEmail {
-    display: none;
 }
 
 /* Modal styles */
@@ -256,7 +260,20 @@ footer span {
 }
 
 #UpdId,
-#newId,
-#updEmail {
+#newId {
     display: none;
+}
+
+.emailElementModal {
+    display: none;
+    justify-content: center;
+    padding: 0 20px 20px 20px;
+}
+
+#updEmail {
+    width: 50%;
+}
+
+.emailElementModal input {
+    text-align: center;
 }
