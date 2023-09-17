@@ -37,12 +37,6 @@ header {
     color: #000;
 }
 
-.container {
-    display: flex;
-    max-width: 70%;
-    flex-direction: column;
-}
-
 .newReminderElement {
     display: flex;
     flex-direction: column;
@@ -162,19 +156,10 @@ table {
 
 th {
     font-size: 17px;
-    text-align: left;
 }
 
 tr:nth-child(odd){
     background-color: #f3dddd;
-}
-/* Descrição */
-th:nth-child(3){
-    width: 60%;
-}
-/* Email */
-th:nth-child(6){
-    width: 30%;
 }
 
 tr:hover,
@@ -276,4 +261,78 @@ footer span {
 
 .emailElementModal input {
     text-align: center;
+}
+
+/* Mobile */
+@media (max-width: 500px) {
+
+    body {
+        display: flex;
+        justify-content: space-evenly;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .emailElement input {
+        width: 100%;
+    }
+
+    table tr {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+
+    table td {
+        width: 360px;
+        height: 30px;
+        text-align: center;
+    }
+
+    table th {
+        text-align: center;
+    }
+
+    #updEmail {
+        width: 100%;
+    }
+
+    td:first-of-type {
+        background-color: #dd8888;
+    }
+
+  }
+
+@media (min-width: 501px) {
+
+    .container {
+        display: flex;
+        max-width: 70%;
+        flex-direction: column;
+    }
+
+    table,
+    th,
+    td {
+        text-align: start;
+        text-align: left;
+    }
+
+    table td::before {
+        content: attr(label);
+        font-weight: bold;
+        width: 120px;
+        min-width: 120px;
+    }
+
+    /* Descrição */
+    th:nth-child(3) {
+        width: 60%;
+    }
+
+    /* Email */
+    th:nth-child(6){
+        width: 30%;
+    }
 }

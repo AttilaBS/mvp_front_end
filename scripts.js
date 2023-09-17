@@ -297,24 +297,6 @@ const getList = async () => {
         let inputSendEmail = document.getElementById('newSendEmail').checked;
         let inputEmail = document.getElementById('newEmail').value;
         let inputRecurring = document.getElementById('newRecurring').checked;
-        // Comparing dates:
-        // 1: Getting current datetime, UTC
-        let now = new Date();
-        // 2: Creating a new date from the input values
-        let dueDate = new Date(inputInterval);
-        // 3: The result applies GMT-3 timezone, so we need to add 3 hours
-        let dueDateUTC = dueDate.setHours(dueDate.getHours() + 3);
-        // 4: Now we need to create another date with hours added
-        let newDueDateUTC = new Date(dueDateUTC);
-        // 5: Now it's time to transform the string created to an integer
-        let newDueDateUTCInteger = newDueDateUTC.getTime();
-        // 6: After, pass the parameter ahead as ISO string to be consumed by API
-        let dueDateISO = newDueDateUTC.toISOString();
-        // 7: For validation purposes, subtracting 3 hours from now
-        let subtractedNow = now.setHours(dueDate.getHours() - 3);
-        // 8: transforming now again to integer for comparison
-        let nowNow = new Date(subtractedNow).getTime();
-
         if (
           inputName === '' 
           || inputDescription === '' 
@@ -326,6 +308,23 @@ const getList = async () => {
         }else if (inputSendEmail && !inputEmail) {
           alert('O campo enviar email foi selecionado, mas o email está vazio!');
         } else {
+          // Comparing dates:
+          // 1: Getting current datetime, UTC
+          let now = new Date();
+          // 2: Creating a new date from the input values
+          let dueDate = new Date(inputInterval);
+          // 3: The result applies GMT-3 timezone, so we need to add 3 hours
+          let dueDateUTC = dueDate.setHours(dueDate.getHours() + 3);
+          // 4: Now we need to create another date with hours added
+          let newDueDateUTC = new Date(dueDateUTC);
+          // 5: Now it's time to transform the string created to an integer
+          let newDueDateUTCInteger = newDueDateUTC.getTime();
+          // 6: After, pass the parameter ahead as ISO string to be consumed by API
+          let dueDateISO = newDueDateUTC.toISOString();
+          // 7: For validation purposes, subtracting 3 hours from now
+          let subtractedNow = now.setHours(dueDate.getHours() - 3);
+          // 8: transforming now again to integer for comparison
+          let nowNow = new Date(subtractedNow).getTime();
           postItem(
             inputName,
             inputDescription,
