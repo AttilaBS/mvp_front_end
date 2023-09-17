@@ -1,6 +1,6 @@
 /*
   ------------------------------------------------------------------------------
-  Função para obter a lista existente do servidor via requisição GET
+  Function to obtain the existing list from the server via GET request.
   ------------------------------------------------------------------------------
 */
 const getList = async () => {
@@ -28,14 +28,14 @@ const getList = async () => {
   
   /*
     ----------------------------------------------------------------------------
-    Chamada da função para carregamento inicial dos dados
+    Function call for initial data loading.
     ----------------------------------------------------------------------------
   */
   getList()
   
    /*
     ----------------------------------------------------------------------------
-    Função para colocar um item na lista do servidor via requisição POST
+    Function to place an item on the server list via POST request.
     ----------------------------------------------------------------------------
   */
     const postItem = async (
@@ -69,7 +69,7 @@ const getList = async () => {
       
       /*
         ------------------------------------------------------------------------
-        Função para criar um botão remove para cada item da lista
+        Function to create a remove button for each list item.
         ------------------------------------------------------------------------
       */
       const insertButton = (parent) => {
@@ -82,7 +82,7 @@ const getList = async () => {
 
       /*
         ------------------------------------------------------------------------
-        Função para criar um botão edit para cada item da lista
+        Function to create an edit button for each list item.
         ------------------------------------------------------------------------
       */
         const insertEditButton = (parent) => {
@@ -95,7 +95,7 @@ const getList = async () => {
       
       /*
         ------------------------------------------------------------------------
-        Função para remover um item da lista a partir do clique no botão remove
+        Function to remove an item from the list by clicking the remove button.
         ------------------------------------------------------------------------
       */
       const removeElement = () => {
@@ -119,7 +119,7 @@ const getList = async () => {
       
       /*
         ------------------------------------------------------------------------
-        Função que faz a requisição de remover lembrete ao servidor.
+        Function that makes the request to remove reminder from the server.
         ------------------------------------------------------------------------
       */
       const deleteReminder = (id) => {
@@ -137,7 +137,7 @@ const getList = async () => {
 
       /*
         ------------------------------------------------------------------------
-        Função para editar um item da lista a partir do clique no botão edit.
+        Function to edit a list item by clicking the edit button.
         ------------------------------------------------------------------------
       */
       const updateElement = () => {
@@ -169,7 +169,7 @@ const getList = async () => {
 
       /*
         ------------------------------------------------------------------------
-        Função que faz a requisição de atualizar o lembrete ao servidor.
+        Function that makes the request to update the reminder at the server.
         ------------------------------------------------------------------------
       */
         const updateReminder = (
@@ -202,7 +202,7 @@ const getList = async () => {
       
       /*
         ------------------------------------------------------------------------
-        Função que abre ou fecha o modal de edição do lembrete.
+        Function that opens or closes the reminder editing modal.
         ------------------------------------------------------------------------
       */
       const openAndCloseModal = (
@@ -227,7 +227,7 @@ const getList = async () => {
 
       /*
         ------------------------------------------------------------------------
-        Função que fecha o modal de edição do lembrete.
+        Function that closes the reminder editing modal.
         ------------------------------------------------------------------------
       */
       const closeModal = (span) => {
@@ -238,7 +238,8 @@ const getList = async () => {
 
       /*
         ------------------------------------------------------------------------
-        Função que captura os valores dos inputs da tabela e envia para o modal.
+        Function that captures the values ​​of table inputs and sends them 
+        to the modal.
         ------------------------------------------------------------------------
       */
       const setModalInputsValues = (
@@ -286,7 +287,7 @@ const getList = async () => {
 
       /*
         ------------------------------------------------------------------------
-        Função para adicionar um novo lembrete 
+        Function to add a new reminder. 
         ------------------------------------------------------------------------
       */
       const newReminder = () => {
@@ -296,17 +297,31 @@ const getList = async () => {
         let inputSendEmail = document.getElementById('newSendEmail').checked;
         let inputEmail = document.getElementById('newEmail').value;
         let inputRecurring = document.getElementById('newRecurring').checked;
-        let dueDate = new Date(inputInterval)
-        let dueDateISO = dueDate.toISOString();
-        let dueDateTime = dueDate.getTime();
-        let todayTime = new Date().getTime();
+        // Comparing dates:
+        // 1: Getting current datetime, UTC
+        let now = new Date();
+        // 2: Creating a new date from the input values
+        let dueDate = new Date(inputInterval);
+        // 3: The result applies GMT-3 timezone, so we need to add 3 hours
+        let dueDateUTC = dueDate.setHours(dueDate.getHours() + 3);
+        // 4: Now we need to create another date with hours added
+        let newDueDateUTC = new Date(dueDateUTC);
+        // 5: Now it's time to transform the string created to an integer
+        let newDueDateUTCInteger = newDueDateUTC.getTime();
+        // 6: After, pass the parameter ahead as ISO string to be consumed by API
+        let dueDateISO = newDueDateUTC.toISOString();
+        // 7: For validation purposes, subtracting 3 hours from now
+        let subtractedNow = now.setHours(dueDate.getHours() - 3);
+        // 8: transforming now again to integer for comparison
+        let nowNow = new Date(subtractedNow).getTime();
+
         if (
           inputName === '' 
           || inputDescription === '' 
           || inputInterval === ''
         ) {
           alert('Os campos nome, descrição e data final são obrigatórios!');
-        } else if (dueDateTime < todayTime) {
+        } else if (newDueDateUTCInteger < nowNow) {
           alert('A data final precisa ser igual ou maior do que hoje !');
         }else if (inputSendEmail && !inputEmail) {
           alert('O campo enviar email foi selecionado, mas o email está vazio!');
@@ -327,7 +342,7 @@ const getList = async () => {
       
       /*
         ------------------------------------------------------------------------
-        Função para inserir items na lista apresentada no frontend
+        Function to insert items into the list presented in the frontend.
         ------------------------------------------------------------------------
       */
       const insertList = (
@@ -383,7 +398,7 @@ const getList = async () => {
 
       /*
         ------------------------------------------------------------------------
-        Função para exibir o campo email apenas quando enviar email for checked.
+        Function to display the email field only when send email is checked.
         ------------------------------------------------------------------------
       */
       const toggleEmailInput = () => {
@@ -398,8 +413,7 @@ const getList = async () => {
 
       /*
         ------------------------------------------------------------------------
-        Função para exibir o campo email do modal apenas quando enviar email 
-        for checked.
+        Function to display the modal's email field only when sending an email.
         ------------------------------------------------------------------------
       */
       const toggleModalEmailInput = () => {
