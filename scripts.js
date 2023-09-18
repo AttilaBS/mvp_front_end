@@ -59,7 +59,13 @@ const getList = async () => {
           body: formData
         })
           .then((response) => {
-            response.json();
+            if (response.status !== 200) {
+              alert('Ocorreu um erro ao salvar o lembrete!');
+            } else {
+              alert('Lembrete adicionado!')
+              location.reload()
+              getList()
+            }
           })
             .catch((error) => {
               console.log(body);
@@ -128,7 +134,9 @@ const getList = async () => {
           method: 'delete'
         })
           .then((response) => {
-            response.json()
+            if (response.status !== 200) {
+              alert('Ocorreu um erro ao remover o lembrete!');
+            }
           })
             .catch((error) => {
               console.error('Error:', error);
@@ -194,7 +202,15 @@ const getList = async () => {
             method: 'put',
             body: formData
           })
-            .then((response) => response.json())
+            .then((response) => {
+              if (response.status !== 200) {
+                alert('Ocorreu um erro ao atualizar o lembrete!');
+              } else {
+                alert('Lembrete atualizado!')
+                location.reload()
+                getList()
+              }
+            })
             .catch((error) => {
               console.error('Error:', error);
             });
@@ -280,9 +296,6 @@ const getList = async () => {
           emailToUpd,
           recurringToUpd
         )
-        alert('Lembrete atualizado!')
-        location.reload()
-        getList()
       }
 
       /*
@@ -297,16 +310,17 @@ const getList = async () => {
         let inputSendEmail = document.getElementById('newSendEmail').checked;
         let inputEmail = document.getElementById('newEmail').value;
         let inputRecurring = document.getElementById('newRecurring').checked;
+        const regex = /^[a-zA-Z]+$/;
         if (
           inputName === '' 
           || inputDescription === '' 
           || inputInterval === ''
         ) {
           alert('Os campos nome, descrição e data final são obrigatórios!');
-        } else if (newDueDateUTCInteger < nowNow) {
-          alert('A data final precisa ser igual ou maior do que hoje !');
-        }else if (inputSendEmail && !inputEmail) {
+        } else if (inputSendEmail && !inputEmail) {
           alert('O campo enviar email foi selecionado, mas o email está vazio!');
+        } else if (!inputName.match(regex)) {
+          alert('O campo nome só pode conter letras!')
         } else {
           // Comparing dates:
           // 1: Getting current datetime, UTC
@@ -325,6 +339,9 @@ const getList = async () => {
           let subtractedNow = now.setHours(dueDate.getHours() - 3);
           // 8: transforming now again to integer for comparison
           let nowNow = new Date(subtractedNow).getTime();
+          if (newDueDateUTCInteger < nowNow) {
+            alert('A data final precisa ser igual ou maior do que hoje !');
+          }
           postItem(
             inputName,
             inputDescription,
@@ -333,9 +350,6 @@ const getList = async () => {
             inputEmail,
             inputRecurring
           )
-          alert('Lembrete adicionado!')
-          location.reload()
-          getList()
         }
       }
       
