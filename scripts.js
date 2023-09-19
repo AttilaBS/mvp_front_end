@@ -60,12 +60,17 @@ const getList = async () => {
         })
           .then((response) => {
             if (response.status !== 200) {
+              console.log(response);
               alert('Ocorreu um erro ao salvar o lembrete!');
             } else {
-              alert('Lembrete adicionado!')
-              location.reload()
-              getList()
+              if (inputSendEmail === false) {
+                alert('Lembrete adicionado!');
+              } else {
+                alert('Lembrete adicionado e email enviado!');
+              }
             }
+            location.reload()
+            getList()
           })
             .catch((error) => {
               console.log(body);
@@ -204,9 +209,14 @@ const getList = async () => {
           })
             .then((response) => {
               if (response.status !== 200) {
+                console.log(response);
                 alert('Ocorreu um erro ao atualizar o lembrete!');
               } else {
-                alert('Lembrete atualizado!')
+                if (toUpdSendEmail === false) {
+                  alert('Lembrete atualizado!');
+                } else {
+                  alert('Lembrete atualizado e email enviado!');
+                }
                 location.reload()
                 getList()
               }
@@ -287,6 +297,11 @@ const getList = async () => {
         let emailToUpd = document.getElementById('updEmail').value;
         let recurringToUpd = document.getElementById('updRecurring').checked
         dueDateToUpd = new Date(intervalToUpd).toISOString();
+        let upReminderBtn = document.getElementById('updBtn');
+        let body = document.body;
+        body.classList.remove('validator');
+        upReminderBtn.setAttribute('disabled', '');
+        upReminderBtn.style.backgroundColor = 'gray';
         updateReminder(
           idToUpd,
           nameToUpd,
@@ -310,7 +325,7 @@ const getList = async () => {
         let inputSendEmail = document.getElementById('newSendEmail').checked;
         let inputEmail = document.getElementById('newEmail').value;
         let inputRecurring = document.getElementById('newRecurring').checked;
-        const regex = /^[a-zA-Z]+$/;
+        const regex = /[^0-9]/;
         if (
           inputName === '' 
           || inputDescription === '' 
@@ -342,6 +357,11 @@ const getList = async () => {
           if (newDueDateUTCInteger < nowNow) {
             alert('A data final precisa ser igual ou maior do que hoje !');
           }
+          let newReminderBtn = document.getElementById('newReminderBtn');
+          let body = document.body;
+          body.classList.remove('validator');
+          newReminderBtn.setAttribute('disabled', '');
+          newReminderBtn.style.backgroundColor = 'gray';
           postItem(
             inputName,
             inputDescription,

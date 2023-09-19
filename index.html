@@ -9,7 +9,7 @@
         <title>Projeto MVP Front End</title>
     </head>
 
-    <body>
+    <body class="validator">
         <header>
             <div class="title">
                 <h2>Lembretes</h2>
@@ -38,10 +38,10 @@
                 <input type="checkbox" class="item-2" id="newRecurring" value="recChecked">
             </div>
             <div class="itemsLine emailElement">
-                <input type="email" id="newEmail" name="newEmail" placeholder="Insira o email para onde será enviado o aviso:">
+                <input type="email" id="newEmail" name="newEmail" placeholder="Insira o email para onde será enviado o lembrete:">
             </div>
             <div class="itemsLine justCenter">
-                <span onclick="newReminder()" class="addBtn">Adicionar Lembrete</span>
+                <button onclick="newReminder()" id="newReminderBtn" class="addBtn">Adicionar Lembrete</button>
             </div>
         </section>
 
@@ -89,7 +89,7 @@
                         <input type="email" id="updEmail" placeholder="Insira ou altere o email para onde será enviado o lembrete:">
                     </div>
                     <div class="itemsLine justCenter">
-                        <span onclick="updateReminder()" id="updBtn" class="addBtn">Atualizar Lembrete</span>
+                        <button onclick="updateReminder()" id="updBtn" class="addBtn">Atualizar Lembrete</button>
                     </div>
                 </div>
             </div>

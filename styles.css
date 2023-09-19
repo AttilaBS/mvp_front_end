@@ -108,7 +108,7 @@ header {
     border-radius: 2px;
 }
 
-.addBtn:hover {
+.validator .addBtn:hover {
     background-color: #2ab53a;
     color: white;
 }
