@@ -212,7 +212,7 @@ const getList = async () => {
                 console.log(response);
                 alert('Ocorreu um erro ao atualizar o lembrete!');
               } else {
-                if (toUpdSendEmail === false) {
+                if (toUpdSendEmail === false || toUpdEmail === '') {
                   alert('Lembrete atualizado!');
                 } else {
                   alert('Lembrete atualizado e email enviado!');
