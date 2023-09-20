@@ -33,26 +33,26 @@
 
 ## Responsabilidades dos arquivos do projeto
 
-# Pasta images:
-  # edit.png e trash.png
+## Pasta images:
+  ### edit.png e trash.png
         Arquivos de ícones utilizados na aplicação.
 
-# Pasta static:
-  # favicon.png
+## Pasta static:
+  ### favicon.png
         Arquivo de favicon, que adiciona ícone customizado à aba do navegador.
 
-# Pasta raiz da aplicação 
-  # index.html:
+## Pasta raiz da aplicação 
+  ### index.html:
     Arquivo responsável pela estrutura HTML da aplicação.
 
-  # README.md
+  ### README.md
       Este arquivo. Responsável por descrever a aplicação, seus objetivos
     e instruções para execução.
 
-  # scripts.js
+  ### scripts.js
       Possui toda a lógica javascript da aplicação. Entre suas funções
     estão a comunicação com a API, manuseio das respostas, validações dos 
     inputs HTML e montagem da tabela.
 
-  # styles.css
+  ### styles.css
       Arquivo responsável pela estilização do arquivo index.html.
