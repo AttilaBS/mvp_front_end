@@ -27,9 +27,7 @@
     |__ styles.css
 
 ## Como executar
-    Para executar o front-end, apenas arraste o arquivo index.html para
-  seu navegador e o front-end estará pronto para utilização. 
-  Lembrar de iniciar o back-end (API) para poder utilizar a aplicação.
+    Apenas arraste o arquivo index.html para seu navegador. 
 
 ## Responsabilidades dos arquivos do projeto
 
