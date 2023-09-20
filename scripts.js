@@ -355,7 +355,7 @@ const getList = async () => {
           // 8: transforming now again to integer for comparison
           let nowNow = new Date(subtractedNow).getTime();
           if (newDueDateUTCInteger < nowNow) {
-            alert('A data final precisa ser igual ou maior do que hoje !');
+            return alert('A data final precisa ser igual ou maior do que hoje !');
           }
           let newReminderBtn = document.getElementById('newReminderBtn');
           let body = document.body;
